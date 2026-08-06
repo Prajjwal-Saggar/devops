@@ -1,0 +1,22 @@
+site_name: DevOps Learning Journey
+
+theme:
+  name: material
+
+nav:
+  - Home: index.md
+  - Linux:
+      - Introduction: linux/index.md
+      - Permissions: linux/permissions.md
+      - Users: linux/users.md
+
+  - Git:
+      - Basics: git/index.md
+      - Branching: git/branching.md
+
+  - Docker:
+      - Introduction: docker/index.md
+      - Dockerfile: docker/dockerfile.md
+
+  - Kubernetes:
+      - Introduction: kubernetes/index.md

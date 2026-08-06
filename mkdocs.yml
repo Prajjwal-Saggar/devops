@@ -1,0 +1,9 @@
+site_name: DEVOPS_NOTES
+theme:
+  name: material
+
+  palette:
+    scheme: slate
+
+nav:
+- Home: index.md
