@@ -1,0 +1,145 @@
+
+/* =========================================================
+   DEVOPS_NOTES — Custom Dark Tech Theme
+   ========================================================= */
+
+/* ---------- Dark Theme Variables ---------- */
+
+[data-md-color-scheme="slate"] {
+    --md-default-bg-color: #0b0f0e;
+    --md-default-fg-color: #d6d6d6;
+    --md-default-fg-color--light: #9aa5a1;
+
+    --md-primary-fg-color: #080b0a;
+    --md-primary-bg-color: #ffffff;
+
+    --md-accent-fg-color: #00ff88;
+}
+
+
+/* ---------- Header ---------- */
+
+.md-header {
+    background: #080b0a;
+}
+
+
+/* ---------- Navigation Tabs ---------- */
+
+.md-tabs {
+    background: #080b0a;
+}
+
+.md-tabs__link--active,
+.md-tabs__link:hover {
+    color: #00ff88 !important;
+}
+
+
+/* ---------- Sidebar ---------- */
+
+.md-nav__link:hover {
+    color: #00ff88 !important;
+}
+
+.md-nav__link--active {
+    color: #00ff88 !important;
+}
+
+
+/* ---------- Links ---------- */
+
+[data-md-color-scheme="slate"] a {
+    color: #00ff88;
+}
+
+[data-md-color-scheme="slate"] a:hover {
+    color: #33ffaa;
+}
+
+
+/* ---------- Headings ---------- */
+
+[data-md-color-scheme="slate"] h1,
+[data-md-color-scheme="slate"] h2,
+[data-md-color-scheme="slate"] h3 {
+    font-weight: 600;
+}
+
+
+/* ---------- Code Blocks ---------- */
+
+[data-md-color-scheme="slate"] .highlight {
+    border: 1px solid #1d2924;
+    border-radius: 8px;
+}
+
+[data-md-color-scheme="slate"] pre {
+    border-radius: 8px;
+}
+
+
+/* ---------- Inline Code ---------- */
+
+[data-md-color-scheme="slate"] code {
+    border-radius: 4px;
+}
+
+
+/* ---------- Admonitions ---------- */
+
+[data-md-color-scheme="slate"] .admonition {
+    border-radius: 8px;
+}
+
+
+/* ---------- Search ---------- */
+
+.md-search__form {
+    background: #111715;
+}
+
+.md-search__input {
+    color: #ffffff;
+}
+
+
+/* ---------- Buttons ---------- */
+
+.md-button {
+    border-radius: 6px;
+}
+
+.md-button:hover {
+    border-color: #00ff88;
+    color: #00ff88;
+}
+
+
+/* ---------- Scrollbar ---------- */
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #080b0a;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #26332e;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #00ff88;
+}
+
+
+/* ---------- Selection ---------- */
+
+::selection {
+    background: #00ff88;
+    color: #000000;
+}
+

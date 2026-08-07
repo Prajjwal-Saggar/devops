@@ -1,9 +1,36 @@
 site_name: DEVOPS_NOTES
+site_description: Prajjwal Saggar's DevOps learning notes and documentation
+
 theme:
   name: material
 
   palette:
     scheme: slate
+    primary: black
+    accent: green
+
+  font:
+    text: Roboto
+    code: Roboto Mono
+
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - search.highlight
+    - search.share
+    - content.code.copy
+
+  extra_css:
+    - stylesheets/extra.css
 
 nav:
-- Home: index.md
+  - Home: index.md
+
+  - DevOps Fundamentals:
+      - Fundamentals: devops_fundamentals/Fundamentals.md
+
+  - Linux:
+      - Linux Basics: linux/Linux01.md
+      - DNS & nslookup: linux/nslookup.md
+      - SSH & ssh-keygen: linux/ssh-keygen.md
