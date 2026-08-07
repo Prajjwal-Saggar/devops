@@ -1,0 +1,1337 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Prajjwal Saggar's DevOps learning notes and documentation">
+      
+      
+      
+      
+        <link rel="prev" href="../nslookup/">
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>SSH & ssh-keygen - DEVOPS_NOTES</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="green">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#ssh-keys-sshconfig-vanis-devops-story" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="DEVOPS_NOTES" class="md-header__button md-logo" aria-label="DEVOPS_NOTES" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            DEVOPS_NOTES
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              SSH & ssh-keygen
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../devops_fundamentals/Fundamentals/" class="md-tabs__link">
+          
+  
+  
+  DevOps Fundamentals
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../Linux01/" class="md-tabs__link">
+          
+  
+  
+  Linux
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="DEVOPS_NOTES" class="md-nav__button md-logo" aria-label="DEVOPS_NOTES" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    DEVOPS_NOTES
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DevOps Fundamentals
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    DevOps Fundamentals
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../devops_fundamentals/Fundamentals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Fundamentals
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linux
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Linux
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Linux01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linux Basics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../nslookup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DNS & nslookup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SSH & ssh-keygen
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="ssh-keys-sshconfig-vanis-devops-story">SSH Keys &amp; <code>~/.ssh/config</code> — Vani's DevOps Story</h1>
+<blockquote>
+<p><strong>Scenario:</strong> Vani is a DevOps engineer.
+One laptop. Multiple GitHub accounts. Multiple servers. Multiple SSH keys.
+Her job is to make sure the <strong>right key goes to the right machine</strong>.</p>
+</blockquote>
+<hr />
+<h1 id="day-1-vani-gets-a-problem">🚨 Day 1 — Vani Gets a Problem</h1>
+<p>Vani starts her new DevOps job.</p>
+<p>Her setup looks like this:</p>
+<pre><code class="language-text">Vani's Laptop
+│
+├── Personal GitHub
+│
+├── Work GitHub
+│
+├── AWS Production Server
+│
+└── Legacy Client Server
+</code></pre>
+<p>She tries to manage everything with one SSH key.</p>
+<p>Very quickly, things become messy.</p>
+<pre><code class="language-text">❌ Wrong GitHub account
+❌ Wrong SSH key
+❌ Permission denied
+❌ Too many authentication failures
+❌ &quot;Why is GitHub using my personal account?!&quot;
+</code></pre>
+<p>Her senior engineer tells her:</p>
+<blockquote>
+<p>"Stop using one key for everything. Give every identity a proper key and let SSH decide which one to use."</p>
+</blockquote>
+<p>That's where <code>ssh-keygen</code> and <code>~/.ssh/config</code> come in.</p>
+<hr />
+<h1 id="1-first-what-exactly-is-an-ssh-key">🔑 1. First: What Exactly Is an SSH Key?</h1>
+<p>Vani runs:</p>
+<pre><code class="language-bash">ssh-keygen
+</code></pre>
+<p>SSH creates a <strong>key pair</strong>:</p>
+<pre><code class="language-text">Private Key
+     +
+Public Key
+     =
+SSH Identity
+</code></pre>
+<p>Think of it like a lock-and-key system.</p>
+<pre><code class="language-text">PUBLIC KEY
+    ↓
+The lock
+Can be shared
+
+PRIVATE KEY
+    ↓
+The actual key
+Must stay with Vani
+</code></pre>
+<p>For example:</p>
+<pre><code class="language-text">~/.ssh/id_ed25519
+~/.ssh/id_ed25519.pub
+</code></pre>
+<p>The first one is private.</p>
+<p>The second one is public.</p>
+<h3 id="vanis-golden-rule">Vani's golden rule</h3>
+<pre><code class="language-text">.pub       → Public → Safe to share
+No .pub    → Private → NEVER share
+</code></pre>
+<hr />
+<h1 id="2-how-does-vani-actually-log-in">🧠 2. How Does Vani Actually Log In?</h1>
+<p>Suppose Vani runs:</p>
+<pre><code class="language-bash">ssh ubuntu@server
+</code></pre>
+<p>The server doesn't receive her private key.</p>
+<p>Instead, authentication roughly works like this:</p>
+<pre><code class="language-text">             VANI'S LAPTOP
+                  │
+                  │
+          &quot;I want to log in&quot;
+                  │
+                  ▼
+          ┌───────────────┐
+          │ Remote Server │
+          └───────────────┘
+                  │
+                  │ Challenge
+                  ▼
+          Vani's SSH client
+                  │
+                  │ Uses PRIVATE KEY
+                  ▼
+          Cryptographic proof
+                  │
+                  ▼
+          Remote server
+                  │
+                  │ Verifies using
+                  │ PUBLIC KEY
+                  ▼
+             ✅ Access
+</code></pre>
+<p>The important part:</p>
+<blockquote>
+<p><strong>Vani's private key never needs to be sent to the server.</strong></p>
+</blockquote>
+<p>The server only needs her public key.</p>
+<hr />
+<h1 id="3-vani-needs-four-different-identities">🔐 3. Vani Needs Four Different Identities</h1>
+<p>Now things get interesting.</p>
+<p>Vani has:</p>
+<pre><code class="language-text">1. Personal GitHub
+2. Work GitHub
+3. AWS Production
+4. Legacy Client Server
+</code></pre>
+<p>Her senior says:</p>
+<blockquote>
+<p>"Give each identity its own key."</p>
+</blockquote>
+<p>So Vani creates:</p>
+<pre><code class="language-text">~/.ssh/
+├── work/
+│   ├── github_work
+│   └── aws_prod
+│
+└── personal/
+    └── github_personal
+</code></pre>
+<p>But what about the legacy server?</p>
+<p>It requires RSA.</p>
+<p>So Vani creates:</p>
+<pre><code class="language-text">legacy_server
+</code></pre>
+<p>Now she has different keys for different systems.</p>
+<hr />
+<h1 id="4-choosing-the-right-algorithm">⚙️ 4. Choosing the Right Algorithm</h1>
+<p>Vani asks:</p>
+<blockquote>
+<p>"What kind of key should I create?"</p>
+</blockquote>
+<p>Her senior gives her this simple rule:</p>
+<table>
+<thead>
+<tr>
+<th>Situation</th>
+<th>Vani Uses</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Modern GitHub</td>
+<td><strong>Ed25519</strong></td>
+</tr>
+<tr>
+<td>Modern Linux server</td>
+<td><strong>Ed25519</strong></td>
+</tr>
+<tr>
+<td>AWS</td>
+<td><strong>Ed25519</strong> when supported</td>
+</tr>
+<tr>
+<td>Old/legacy system</td>
+<td><strong>RSA 4096</strong></td>
+</tr>
+</tbody>
+</table>
+<p>So for modern systems:</p>
+<pre><code class="language-bash">ssh-keygen -t ed25519
+</code></pre>
+<p>For the legacy client:</p>
+<pre><code class="language-bash">ssh-keygen -t rsa -b 4096
+</code></pre>
+<h3 id="why-ed25519">Why Ed25519?</h3>
+<p>It's modern, fast, compact, and widely supported.</p>
+<h3 id="why-rsa-4096">Why RSA 4096?</h3>
+<p>Because Vani's old client server doesn't support Ed25519.</p>
+<p>So:</p>
+<pre><code class="language-text">Modern system
+      ↓
+Ed25519
+
+Legacy system
+      ↓
+RSA 4096
+</code></pre>
+<hr />
+<h1 id="5-vani-creates-her-work-github-key">🛠️ 5. Vani Creates Her Work GitHub Key</h1>
+<p>Vani needs a separate identity for her company's GitHub.</p>
+<p>She runs:</p>
+<pre><code class="language-bash">ssh-keygen -t ed25519 \
+  -f ~/.ssh/work/github_work \
+  -C &quot;vani@company.com&quot;
+</code></pre>
+<p>SSH creates:</p>
+<pre><code class="language-text">~/.ssh/work/
+├── github_work
+└── github_work.pub
+</code></pre>
+<p>She adds:</p>
+<pre><code class="language-text">github_work.pub
+</code></pre>
+<p>to her <strong>work GitHub account</strong>.</p>
+<p>The private key:</p>
+<pre><code class="language-text">github_work
+</code></pre>
+<p>stays on her laptop.</p>
+<hr />
+<h1 id="6-vani-creates-her-personal-github-key">🏠 6. Vani Creates Her Personal GitHub Key</h1>
+<p>Her personal GitHub needs a completely different identity.</p>
+<pre><code class="language-bash">ssh-keygen -t ed25519 \
+  -f ~/.ssh/personal/github_personal \
+  -C &quot;vani@personal.com&quot;
+</code></pre>
+<p>Now:</p>
+<pre><code class="language-text">~/.ssh/
+├── work/
+│   └── github_work
+│
+└── personal/
+    └── github_personal
+</code></pre>
+<p>She adds:</p>
+<pre><code class="language-text">github_personal.pub
+</code></pre>
+<p>to her personal GitHub account.</p>
+<p>Now her two GitHub identities are separated.</p>
+<hr />
+<h1 id="7-vani-gets-production-access">☁️ 7. Vani Gets Production Access</h1>
+<p>Her company has an AWS production server:</p>
+<pre><code class="language-text">13.233.45.100
+</code></pre>
+<p>Vani creates another key:</p>
+<pre><code class="language-bash">ssh-keygen -t ed25519 \
+  -f ~/.ssh/work/aws_prod \
+  -C &quot;vani@company.com&quot;
+</code></pre>
+<p>Now:</p>
+<pre><code class="language-text">~/.ssh/
+├── work/
+│   ├── github_work
+│   └── aws_prod
+│
+└── personal/
+    └── github_personal
+</code></pre>
+<p>She installs the corresponding public key on the production server.</p>
+<hr />
+<h1 id="8-then-comes-the-legacy-server">🏚️ 8. Then Comes the Legacy Server...</h1>
+<p>Unfortunately, an old client server says:</p>
+<blockquote>
+<p>"Ed25519? Never heard of it."</p>
+</blockquote>
+<p>It requires RSA.</p>
+<p>Vani doesn't argue.</p>
+<p>She creates:</p>
+<pre><code class="language-bash">ssh-keygen -t rsa -b 4096 \
+  -f ~/.ssh/work/legacy_server \
+  -C &quot;vani@company.com&quot;
+</code></pre>
+<p>Now she has:</p>
+<pre><code class="language-text">~/.ssh/
+├── work/
+│   ├── github_work
+│   ├── aws_prod
+│   └── legacy_server
+│
+└── personal/
+    └── github_personal
+</code></pre>
+<hr />
+<h1 id="9-vani-has-too-many-keys">😵 9. Vani Has Too Many Keys</h1>
+<p>Now Vani has a new problem.</p>
+<p>She could manually specify the key every time:</p>
+<pre><code class="language-bash">ssh -i ~/.ssh/work/aws_prod ubuntu@13.233.45.100
+</code></pre>
+<p>But that's ugly.</p>
+<p>And imagine doing this every day.</p>
+<p>She wants to type:</p>
+<pre><code class="language-bash">ssh aws-prod
+</code></pre>
+<p>and have SSH automatically know:</p>
+<blockquote>
+<p>"Oh, Vani means the AWS production server. Use <code>aws_prod</code>."</p>
+</blockquote>
+<p>That's what:</p>
+<pre><code class="language-text">~/.ssh/config
+</code></pre>
+<p>is for.</p>
+<hr />
+<h1 id="10-vani-creates-sshconfig">🧠 10. Vani Creates <code>~/.ssh/config</code></h1>
+<p>She runs:</p>
+<pre><code class="language-bash">nano ~/.ssh/config
+</code></pre>
+<p>And creates:</p>
+<pre><code class="language-sshconfig"># Work GitHub
+Host github-work
+    HostName github.com
+    User git
+    IdentityFile ~/.ssh/work/github_work
+    IdentitiesOnly yes
+
+# Personal GitHub
+Host github-personal
+    HostName github.com
+    User git
+    IdentityFile ~/.ssh/personal/github_personal
+    IdentitiesOnly yes
+
+# AWS Production
+Host aws-prod
+    HostName 13.233.45.100
+    User ubuntu
+    IdentityFile ~/.ssh/work/aws_prod
+    IdentitiesOnly yes
+
+# Legacy Client
+Host legacy-client
+    HostName legacy.example.com
+    User admin
+    IdentityFile ~/.ssh/work/legacy_server
+    IdentitiesOnly yes
+</code></pre>
+<p>Now Vani has created <strong>aliases</strong> for her machines.</p>
+<hr />
+<h1 id="11-what-does-host-actually-mean">🏷️ 11. What Does <code>Host</code> Actually Mean?</h1>
+<p>This:</p>
+<pre><code class="language-sshconfig">Host aws-prod
+</code></pre>
+<p>doesn't mean the actual server name.</p>
+<p>It's simply Vani's nickname for the server.</p>
+<p>So:</p>
+<pre><code class="language-text">Host aws-prod
+       ↓
+Vani's nickname
+       ↓
+13.233.45.100
+</code></pre>
+<p>Now she can type:</p>
+<pre><code class="language-bash">ssh aws-prod
+</code></pre>
+<p>instead of:</p>
+<pre><code class="language-bash">ssh -i ~/.ssh/work/aws_prod ubuntu@13.233.45.100
+</code></pre>
+<p>Much cleaner.</p>
+<hr />
+<h1 id="12-what-does-hostname-mean">🗺️ 12. What Does <code>HostName</code> Mean?</h1>
+<p>This:</p>
+<pre><code class="language-sshconfig">HostName 13.233.45.100
+</code></pre>
+<p>is the <strong>real destination</strong>.</p>
+<p>So:</p>
+<pre><code class="language-text">Host
+  ↓
+aws-prod
+
+HostName
+  ↓
+13.233.45.100
+</code></pre>
+<p>Think:</p>
+<pre><code class="language-text">Host     = Nickname
+HostName = Actual address
+</code></pre>
+<hr />
+<h1 id="13-what-does-user-mean">👤 13. What Does <code>User</code> Mean?</h1>
+<p>Vani's AWS server expects the username:</p>
+<pre><code class="language-text">ubuntu
+</code></pre>
+<p>So:</p>
+<pre><code class="language-sshconfig">User ubuntu
+</code></pre>
+<p>For GitHub, SSH uses:</p>
+<pre><code class="language-sshconfig">User git
+</code></pre>
+<p>That's why Git URLs look like:</p>
+<pre><code class="language-text">git@github.com
+</code></pre>
+<p>The GitHub username isn't the SSH user.</p>
+<p>The SSH user is simply:</p>
+<pre><code class="language-text">git
+</code></pre>
+<hr />
+<h1 id="14-what-does-identityfile-mean">🔑 14. What Does <code>IdentityFile</code> Mean?</h1>
+<p>This is the important one.</p>
+<pre><code class="language-sshconfig">IdentityFile ~/.ssh/work/aws_prod
+</code></pre>
+<p>means:</p>
+<blockquote>
+<p>"When Vani connects using this host, use this private key."</p>
+</blockquote>
+<p>So:</p>
+<pre><code class="language-text">ssh aws-prod
+      │
+      ▼
+~/.ssh/config
+      │
+      ▼
+Host aws-prod
+      │
+      ▼
+IdentityFile ~/.ssh/work/aws_prod
+      │
+      ▼
+Use AWS private key
+</code></pre>
+<hr />
+<h1 id="15-why-does-vani-need-identitiesonly-yes">🚧 15. Why Does Vani Need <code>IdentitiesOnly yes</code>?</h1>
+<p>Vani has many keys.</p>
+<p>SSH might otherwise try several identities from her SSH agent.</p>
+<p>That can result in errors such as:</p>
+<pre><code class="language-text">Too many authentication failures
+</code></pre>
+<p>So she adds:</p>
+<pre><code class="language-sshconfig">IdentitiesOnly yes
+</code></pre>
+<p>This tells SSH:</p>
+<blockquote>
+<p>"For this host, don't randomly try every key I have. Use the identity I've configured."</p>
+</blockquote>
+<hr />
+<h1 id="16-vani-tests-her-aws-connection">🧪 16. Vani Tests Her AWS Connection</h1>
+<p>Instead of remembering:</p>
+<pre><code class="language-bash">ssh -i ~/.ssh/work/aws_prod ubuntu@13.233.45.100
+</code></pre>
+<p>she simply runs:</p>
+<pre><code class="language-bash">ssh aws-prod
+</code></pre>
+<p>SSH reads:</p>
+<pre><code class="language-text">~/.ssh/config
+</code></pre>
+<p>and finds:</p>
+<pre><code class="language-sshconfig">Host aws-prod
+    HostName 13.233.45.100
+    User ubuntu
+    IdentityFile ~/.ssh/work/aws_prod
+</code></pre>
+<p>Result:</p>
+<pre><code class="language-text">Vani
+ │
+ │ ssh aws-prod
+ ▼
+SSH Config
+ │
+ ├── HostName → 13.233.45.100
+ ├── User → ubuntu
+ └── Key → aws_prod
+ │
+ ▼
+AWS Production
+</code></pre>
+<hr />
+<h1 id="17-now-vani-has-a-github-problem">🐙 17. Now Vani Has a GitHub Problem</h1>
+<p>Vani runs:</p>
+<pre><code class="language-bash">git clone git@github.com:company/project.git
+</code></pre>
+<p>But which GitHub account should SSH use?</p>
+<p>Her personal account?</p>
+<p>Her work account?</p>
+<p>SSH sees:</p>
+<pre><code class="language-text">github.com
+</code></pre>
+<p>and doesn't know that Vani wants the <strong>work key</strong>.</p>
+<p>This is where the <code>Host</code> aliases become extremely useful.</p>
+<hr />
+<h1 id="18-work-github">💼 18. Work GitHub</h1>
+<p>Vani configured:</p>
+<pre><code class="language-sshconfig">Host github-work
+    HostName github.com
+    User git
+    IdentityFile ~/.ssh/work/github_work
+    IdentitiesOnly yes
+</code></pre>
+<p>So instead of:</p>
+<pre><code class="language-bash">git clone git@github.com:company/project.git
+</code></pre>
+<p>she uses:</p>
+<pre><code class="language-bash">git clone git@github-work:company/project.git
+</code></pre>
+<p>Notice:</p>
+<pre><code class="language-text">github-work
+</code></pre>
+<p>is NOT a real domain.</p>
+<p>It's Vani's SSH alias.</p>
+<p>SSH internally translates:</p>
+<pre><code class="language-text">github-work
+      ↓
+github.com
+      ↓
+github_work private key
+</code></pre>
+<hr />
+<h1 id="19-personal-github">🏠 19. Personal GitHub</h1>
+<p>Her personal configuration is:</p>
+<pre><code class="language-sshconfig">Host github-personal
+    HostName github.com
+    User git
+    IdentityFile ~/.ssh/personal/github_personal
+    IdentitiesOnly yes
+</code></pre>
+<p>So she clones personal repositories with:</p>
+<pre><code class="language-bash">git clone git@github-personal:vani-personal/project.git
+</code></pre>
+<p>Now:</p>
+<pre><code class="language-text">git@github-work
+        ↓
+Work GitHub Key
+
+git@github-personal
+        ↓
+Personal GitHub Key
+</code></pre>
+<p>Same physical domain:</p>
+<pre><code class="language-text">github.com
+</code></pre>
+<p>Different SSH identities.</p>
+<hr />
+<h1 id="20-the-magic-of-sshconfig">🧩 20. The Magic of <code>~/.ssh/config</code></h1>
+<p>Vani's entire setup can now be visualized like this:</p>
+<pre><code class="language-text">                    ~/.ssh/config
+                          │
+          ┌───────────────┼────────────────┐
+          │               │                │
+          ▼               ▼                ▼
+    github-work    github-personal     aws-prod
+          │               │                │
+          ▼               ▼                ▼
+     github.com       github.com      13.233.45.100
+          │               │                │
+          ▼               ▼                ▼
+   github_work     github_personal     aws_prod
+          │               │                │
+          ▼               ▼                ▼
+      Work GitHub    Personal GitHub    AWS Server
+</code></pre>
+<p>That's the entire purpose of SSH config:</p>
+<blockquote>
+<p><strong>Map a friendly alias to the correct destination, user, and private key.</strong></p>
+</blockquote>
+<hr />
+<h1 id="21-vanis-debugging-day">🛠️ 21. Vani's Debugging Day</h1>
+<p>One morning:</p>
+<pre><code class="language-bash">ssh aws-prod
+</code></pre>
+<p>fails.</p>
+<p>She wants to know what SSH is doing.</p>
+<p>She runs:</p>
+<pre><code class="language-bash">ssh -v aws-prod
+</code></pre>
+<p>For even more detail:</p>
+<pre><code class="language-bash">ssh -vvv aws-prod
+</code></pre>
+<p>Now she can see:</p>
+<pre><code class="language-text">Which config was loaded
+Which host was selected
+Which identity was attempted
+Authentication methods
+Server response
+</code></pre>
+<p>This is extremely useful when debugging SSH.</p>
+<hr />
+<h1 id="22-vani-loses-her-pub-file">🔍 22. Vani Loses Her <code>.pub</code> File</h1>
+<p>One day she accidentally deletes:</p>
+<pre><code class="language-text">github_work.pub
+</code></pre>
+<p>She panics.</p>
+<p>But the private key still exists:</p>
+<pre><code class="language-text">github_work
+</code></pre>
+<p>She can recreate the public key:</p>
+<pre><code class="language-bash">ssh-keygen -y \
+  -f ~/.ssh/work/github_work \
+  &gt; ~/.ssh/work/github_work.pub
+</code></pre>
+<p>The private key remains the source of truth.</p>
+<hr />
+<h1 id="23-vani-wants-to-verify-a-key">🆔 23. Vani Wants to Verify a Key</h1>
+<p>She can view the fingerprint:</p>
+<pre><code class="language-bash">ssh-keygen -l \
+  -f ~/.ssh/work/github_work.pub
+</code></pre>
+<p>A fingerprint is a short representation of the key that can be used for verification.</p>
+<hr />
+<h1 id="24-vani-protects-her-private-keys">🔒 24. Vani Protects Her Private Keys</h1>
+<p>She checks permissions:</p>
+<pre><code class="language-bash">ls -l ~/.ssh/work/github_work
+</code></pre>
+<p>Private keys should not be readable by everyone.</p>
+<p>For example:</p>
+<pre><code class="language-bash">chmod 600 ~/.ssh/work/github_work
+</code></pre>
+<p>And remember:</p>
+<pre><code class="language-text">❌ Never commit private keys
+❌ Never upload private keys
+❌ Never send private keys to someone
+❌ Never put private keys in GitHub
+</code></pre>
+<p>Public keys are different:</p>
+<pre><code class="language-text">✅ Public keys can be copied to servers
+✅ Public keys can be added to GitHub
+</code></pre>
+<hr />
+<h1 id="25-vanis-final-ssh-cheat-sheet">🧠 25. Vani's Final SSH Cheat Sheet</h1>
+<h3 id="generate-a-modern-key">Generate a modern key</h3>
+<pre><code class="language-bash">ssh-keygen -t ed25519 -f ~/.ssh/key_name
+</code></pre>
+<h3 id="generate-rsa-4096-for-legacy-systems">Generate RSA 4096 for legacy systems</h3>
+<pre><code class="language-bash">ssh-keygen -t rsa -b 4096 -f ~/.ssh/key_name
+</code></pre>
+<h3 id="change-passphrase">Change passphrase</h3>
+<pre><code class="language-bash">ssh-keygen -p -f ~/.ssh/key_name
+</code></pre>
+<h3 id="recreate-public-key">Recreate public key</h3>
+<pre><code class="language-bash">ssh-keygen -y -f ~/.ssh/key_name &gt; ~/.ssh/key_name.pub
+</code></pre>
+<h3 id="show-fingerprint">Show fingerprint</h3>
+<pre><code class="language-bash">ssh-keygen -l -f ~/.ssh/key_name.pub
+</code></pre>
+<h3 id="test-ssh">Test SSH</h3>
+<pre><code class="language-bash">ssh alias-name
+</code></pre>
+<h3 id="debug-ssh">Debug SSH</h3>
+<pre><code class="language-bash">ssh -v alias-name
+</code></pre>
+<h3 id="edit-ssh-configuration">Edit SSH configuration</h3>
+<pre><code class="language-bash">nano ~/.ssh/config
+</code></pre>
+<hr />
+<h1 id="26-vanis-mental-model">🎯 26. Vani's Mental Model</h1>
+<p>Whenever Vani sees:</p>
+<pre><code class="language-bash">ssh something
+</code></pre>
+<p>she asks:</p>
+<pre><code class="language-text">&quot;What does 'something' mean?&quot;
+        │
+        ▼
+Check ~/.ssh/config
+        │
+        ▼
+Find Host something
+        │
+        ▼
+Where is HostName?
+        │
+        ▼
+Which User?
+        │
+        ▼
+Which IdentityFile?
+        │
+        ▼
+Use that private key
+        │
+        ▼
+Authenticate using public key
+        │
+        ▼
+       ✅
+</code></pre>
+<p>And when she sees:</p>
+<pre><code class="language-bash">git clone git@github-work:company/project.git
+</code></pre>
+<p>she knows:</p>
+<pre><code class="language-text">github-work
+     ↓
+SSH config alias
+     ↓
+github.com
+     ↓
+github_work private key
+     ↓
+Work GitHub account
+</code></pre>
+<hr />
+<h1 id="the-one-rule-vani-never-forgets">🏆 The One Rule Vani Never Forgets</h1>
+<pre><code class="language-text">                    SSH
+                     │
+          ┌──────────┴──────────┐
+          │                     │
+       WHERE?                 WHO?
+          │                     │
+       HostName              User
+          │                     │
+          └──────────┬──────────┘
+                     │
+                  WHICH KEY?
+                     │
+                IdentityFile
+                     │
+                     ▼
+              Correct Identity
+</code></pre>
+<p><strong><code>ssh-keygen</code> creates Vani's identities.</strong></p>
+<p><strong><code>~/.ssh/config</code> tells SSH which identity to use and where to use it.</strong></p>
+<p>That's the entire game.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "search.highlight", "search.share", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>
