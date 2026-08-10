@@ -33,4 +33,4 @@ nav:
   - Linux:
       - Linux Basics: linux/Linux01.md
       - DNS & nslookup: linux/nslookup.md
-      - SSH & ssh-keygen: linux/ssh-keygen.md
+      - SSH: linux/ssh.md
