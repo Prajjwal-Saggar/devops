@@ -34,3 +34,7 @@ nav:
       - Linux Basics: linux/Linux01.md
       - DNS & nslookup: linux/nslookup.md
       - SSH: linux/ssh.md
+      - User Management: linux/user_management.md
+  - Docker:
+      - Docker Basics: docker/lesson1.md
+      - Docker Images: docker/docker_images.md
